@@ -121,7 +121,7 @@ class SofaDB {
 		);
 	}
 
-	/*
+	/**
 	 * Normalize and validate key names
 	 *
 	 * @param string $key
@@ -140,7 +140,7 @@ class SofaDB {
 		return $key;
 	}
 
-	/*
+	/**
 	 * Validate a value
 	 *
 	 * @note This does not check that the JSON is valid. It should be.

@@ -49,6 +49,7 @@ class SofaSchema {
 	 *
 	 * @param IDatabase $db Must be a DB_MASTER not DB_REPLICA
 	 * @param string $name The schema name
+	 * @return int
 	 */
 	public function getOrCreateSchemaId( IDatabase $db, $name ) {
 		$schema = self::normalizeSchema( $name );
