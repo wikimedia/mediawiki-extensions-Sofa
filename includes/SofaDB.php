@@ -114,7 +114,7 @@ class SofaDB {
 	 * @param int $pageId Id of page to delete stuff for
 	 */
 	public function delete( $pageId ) {
-		$dbw->delete(
+		$this->dbw->delete(
 			'sofa_map',
 			[ 'sm_page' => $pageId ],
 			__METHOD__
@@ -151,7 +151,7 @@ class SofaDB {
 		if ( !is_string( $value ) && $value !== null ) {
 			return false;
 		}
-		if ( strlen( $value ) > 65535 ) {
+		if ( $value !== null && strlen( $value ) > 65535 ) {
 			return false;
 		}
 		return true;

@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\Revision\RenderedRevision;
+use MediaWiki\Revision\RevisionRecord;
 
 class SofaHooks {
 	public static function onLoadExtensionSchemaUpdates( $updater ) {
@@ -87,10 +88,10 @@ class SofaHooks {
 	) {
 		$id = $revRec->getPageId();
 		if ( !$id ) {
-			throw LogicException( "Unknown page id" );
+			throw new LogicException( "Unknown page id" );
 		}
 		// @todo Maybe this should be its own job
 		$sofaDB = new SofaDB;
-		$updates = array_merge( $updates, $sofaDB->getDeletionUpdates() );
+		$updates = array_merge( $updates, $sofaDB->getDeletionUpdates( $id ) );
 	}
 }
