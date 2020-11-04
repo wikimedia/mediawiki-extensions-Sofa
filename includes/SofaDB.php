@@ -4,7 +4,7 @@
 // then it does when I wrote it all out. I already think it should be refactored.
 class SofaDB {
 
-	/** @var IDatabase $dbw */
+	/** @var IDatabase */
 	private $dbw;
 
 	/**
