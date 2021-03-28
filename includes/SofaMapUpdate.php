@@ -12,7 +12,7 @@ class SofaMapUpdate implements DeferrableUpdate {
 	 * @param array $smaps The sofa attributes being added to the page
 	 */
 	public function __construct( Title $title, array $smaps ) {
-		$this->title = $title->createFragmentTarget( '1234' );
+		$this->title = $title;
 		$this->smaps = $smaps;
 	}
 

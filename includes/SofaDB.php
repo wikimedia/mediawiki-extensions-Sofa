@@ -94,7 +94,7 @@ class SofaDB {
 		// EVIL HACK. This seems to work but is very sketch. We might be better off
 		// duplicating code from core.
 		foreach ( $schemasModified as $schema ) {
-			$encTitle = Title::makeTitle( NS_SPECIAL, (string)$schema );
+			$encTitle = Title::makeTitle( NS_SPECIAL, "Sofa/" . (string)$schema );
 			LinksUpdate::queueRecursiveJobsForTable( $encTitle, 'sofa_cache' );
 			$job = HTMLCacheUpdateJob::newForBacklinks(
 				$encTitle,
@@ -110,11 +110,10 @@ class SofaDB {
 		// Should this be in an AutoCommitUpdate?
 		// Does the structure of this class even make sense?
 		// Also, later todo, make this possibly be a different db.
-		$that = $this;
 		return [
 			new MWCallableUpdate(
-				function () use ( $title, $smaps, $that ) {
-					$that->setForPage( $title, $smaps );
+				function () use ( $title, $smaps ) {
+					$this->setForPage( $title, $smaps );
 				},
 				__METHOD__,
 				$this->dbw
@@ -232,9 +231,10 @@ class SofaDB {
 		$dbr = wfGetDB( DB_REPLICA );
 		if ( $table === 'sofa_cache' ) {
 			// HACK HACK HACK
-			// Store schemas as Special:<schemaid>
-			if ( $title->inNamespace( NS_SPECIAL ) ) {
-				$subquery = (int)$title->getDBKey();
+			// Store schemas as Special:Sofa/<schemaid>
+			$schema = self::getSchemaFromEncodedTitle( $title );
+			if ( $schema ) {
+				$subquery = $schema;
 			} else {
 				// This doesn't really work because the current state of
 				// the page doesn't reflect what schemas used to be set there.
@@ -254,5 +254,24 @@ class SofaDB {
 			];
 		}
 		return false;
+	}
+
+	/**
+	 * Given a Title of the form Special:Sofa/<schemaid> get the schema
+	 *
+	 * @param Title $title e.g. Special:Sofa/1234
+	 * @return int|bool The schema id or false
+	 */
+	private static function getSchemaFromEncodedTitle( Title $title ) {
+		if ( !$title->inNamespace( NS_SPECIAL ) ) {
+			return false;
+		}
+
+		$pageParts = explode( '/', $title->getDBKey(), 2 );
+
+		if ( count( $pageParts ) !== 2 || $pageParts[0] !== 'Sofa' || !is_numeric( $pageParts[1] ) ) {
+			return false;
+		}
+		return (int)$pageParts[1];
 	}
 }
