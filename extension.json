@@ -1,7 +1,7 @@
 {
 	"name": "Sofa",
 	"version": "0.1",
-	"author": "Brian Wolff",
+	"author": ["..."],
 	"url": "https://www.mediawiki.org/wiki/Extension:Sofa",
 	"descriptionmsg": "sofa-desc",
 	"type": "other",
@@ -11,7 +11,10 @@
 		"SofaDB": "includes/SofaDB.php",
 		"SofaMapUpdate": "includes/SofaMapUpdate.php",
 		"InvalidSofaSchemaException": "includes/InvalidSofaSchemaException.php",
-		"SofaSchema": "includes/SofaSchema.php"
+		"SofaSchema": "includes/SofaSchema.php",
+		"SofaDBManager": "includes/SofaDBManager.php",
+		"SofaFetch": "includes/SofaFetch.php",
+		"SofaCacheUpdate": "includes/SofaCacheUpdate.php"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": [
@@ -23,8 +26,14 @@
 		"RevisionDataUpdates": [
 			"SofaHooks::onRevisionDataUpdates"
 		],
-		"PageDeletionUpdates": [
-			"SofaHooks::onPageDeletionUpdates"
+		"PageDeletionDataUpdates": [
+			"SofaHooks::onPageDeletionDataUpdates"
+		],
+		"BacklinkCacheGetPrefix": [
+			"SofaDB::onBacklinkCacheGetPrefix"
+		],
+		"BacklinkCacheGetConditions": [
+			"SofaDB::onBacklinkCacheGetConditions"
 		]
 	},
 	"MessagesDirs": {

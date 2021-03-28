@@ -9,21 +9,30 @@ class SofaMapUpdate implements DeferrableUpdate {
 
 	/**
 	 * @param Title $title
-	 * @param array $smaps
+	 * @param array $smaps The sofa attributes being added to the page
 	 */
 	public function __construct( Title $title, array $smaps ) {
-		$this->title = $title;
+		$this->title = $title->createFragmentTarget( '1234' );
 		$this->smaps = $smaps;
 	}
 
 	public function doUpdate() {
-var_dump( __METHOD__ );
 		$sdb = new SofaDB;
 		$updates = $sdb->getUpdates( $this->title, $this->smaps );
 		foreach ( $updates as $update ) {
-var_dump( "doing update" );
 			$update->doUpdate();
 		}
+		// We don't have causeAction or causeAgent known to us due to the way hooks
+		// are structured.
+		// FIXME: This will refresh things modified or added, but does not refresh
+		// things deleted.
+		/*LinksUpdate::queueRecursiveJobsForTable( $this->title, 'sofa_cache' );
+		$job = HTMLCacheUpdateJob::newForBacklinks(
+			$this->title,
+			'sofa_cache',
+		);
+		JobQueueGroup::singleton()->lazyPush( $job );
+*/
 	}
 
 }

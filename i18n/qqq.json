@@ -2,5 +2,10 @@
 	"@metadata": {
 		"authors": []
 	},
-	"sofa-desc": "{{desc|name=Sofa}}"
+	"sofa-desc": "{{desc|name=Sofa}}",
+	"sofa-noschemakey": "Error message from parser function",
+	"sofa-invalidschema": "Error message from parser function",
+	"sofa-invalidkey": "Error message from parser function",
+	"sofa-invalidvalue": "Error message from parser function"
+
 }
