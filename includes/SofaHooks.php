@@ -4,16 +4,30 @@ use MediaWiki\Revision\RenderedRevision;
 use MediaWiki\Revision\RevisionRecord;
 
 class SofaHooks {
+	/**
+	 * @param DatabaseUpdater $updater
+	 */
 	public static function onLoadExtensionSchemaUpdates( $updater ) {
 		$base = dirname( __DIR__ );
 		$updater->addExtensionTable( 'sofa_map', "$base/sql/tables.sql" );
 	}
 
+	/**
+	 * @param Parser $parser
+	 */
 	public static function onParserFirstCallInit( Parser $parser ) {
 		$parser->setFunctionHook( 'sofaset', 'SofaHooks::sofaSet' );
 		$parser->setFunctionHook( 'sofaget', 'SofaHooks::sofaGet' );
 	}
 
+	/**
+	 * @param Parser $parser
+	 * @param string|null $schema
+	 * @param string|null $key
+	 * @param string|null $value
+	 *
+	 * @return string
+	 */
 	public static function sofaSet( Parser $parser, $schema = null, $key = null, $value = null ) {
 		if ( $schema === null || $key === null ) {
 			return '<strong class="error">' .
