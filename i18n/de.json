@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"sofa-desc": "Eine Berichtserweiterung für MediaWiki",
+	"sofa-noschemakey": "Sowohl <code>schema</code> als auch <code>key</code> müssen angegeben werden.",
+	"sofa-invalidschema": "Der Schemaname ist ungültig.",
+	"sofa-invalidkey": "Der Schlüsselname ist ungültig.",
+	"sofa-invalidvalue": "Verwendeter Wert für Wert ist ungültig."
+}
