@@ -4,5 +4,9 @@
 			"Bjankuloski06"
 		]
 	},
-	"sofa-desc": "Извештаен додаток за МедијаВики"
+	"sofa-desc": "Извештаен додаток за МедијаВики",
+	"sofa-noschemakey": "Мора да се укажат и <code>schema</code> и <code>key</code>.",
+	"sofa-invalidschema": "Шемата има неважечки назив.",
+	"sofa-invalidkey": "Клучот има неважечки назив.",
+	"sofa-invalidvalue": "Укажаната вредност е неважечка."
 }

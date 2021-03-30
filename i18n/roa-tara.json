@@ -4,5 +4,9 @@
 			"Joetaras"
 		]
 	},
-	"sofa-desc": "'N'estenzione de reportisteche pe MediaUicchi"
+	"sofa-desc": "'N'estenzione de reportisteche pe MediaUicchi",
+	"sofa-noschemakey": "Totte e doje 'u <code>schema</code> e 'a <code>key</code> onna essere specificate.",
+	"sofa-invalidschema": "'U nome d'u scheme non g'è valide.",
+	"sofa-invalidkey": "'U nome d'a chiave non g'è valide.",
+	"sofa-invalidvalue": "Valore ausate pe value non g'è valide."
 }

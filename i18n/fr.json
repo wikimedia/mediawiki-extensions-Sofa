@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"Gomoko",
 			"Thibaut120094"
 		]
 	},
-	"sofa-desc": "Une extension de rapport pour MediaWiki"
+	"sofa-desc": "Une extension de rapport pour MediaWiki",
+	"sofa-noschemakey": "À la fois <code>schema</code> et <code>key</code> doivent être spécifiés.",
+	"sofa-invalidschema": "Le nom de schéma n’est pas valide.",
+	"sofa-invalidkey": "Le nom de la clé n’est pas valide.",
+	"sofa-invalidvalue": "La valeur utilisée n’est pas valide."
 }

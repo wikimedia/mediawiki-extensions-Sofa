@@ -4,5 +4,9 @@
 			"Kly"
 		]
 	},
-	"sofa-desc": "MediaWiki 的回報擴充套件"
+	"sofa-desc": "MediaWiki 的回報擴充套件",
+	"sofa-noschemakey": "必須指定 <code>schema</code> 與 <code>key</code> 兩者。",
+	"sofa-invalidschema": "Schema 名稱無效。",
+	"sofa-invalidkey": "Key 名稱無效。",
+	"sofa-invalidvalue": "用於 value 的值無效。"
 }
