@@ -104,6 +104,11 @@ class SofaDB {
 		}
 	}
 
+	/**
+	 * @param Title $title
+	 * @param array $smaps
+	 * @return MWCallableUpdate[]
+	 */
 	public function getUpdates( Title $title, array $smaps ) {
 		// Fixme figure out transaction stuff better here.
 		// Should this be in its own transaction?

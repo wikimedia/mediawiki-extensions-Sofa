@@ -5,12 +5,18 @@ class SofaSchema {
 	private static $instance;
 	/** @var MapCacheLRU */
 	private static $cache;
-	const CACHE_SIZE = 500;
+	private const CACHE_SIZE = 500;
 
+	/**
+	 * @param MapCacheLRU $cache
+	 */
 	private function __construct( MapCacheLRU $cache ) {
 		self::$cache = $cache;
 	}
 
+	/**
+	 * @return self
+	 */
 	public static function singleton() {
 		if ( !self::$instance ) {
 			self::$instance = new self( new MapCacheLRU( self::CACHE_SIZE ) );
@@ -24,7 +30,7 @@ class SofaSchema {
 	 * @note Schema names are immutable
 	 * @param IDatabase $db
 	 * @param string $name Name of schema
-	 * @return bool|int Schema id or false if does not exist
+	 * @return int|false Schema id or false if does not exist
 	 */
 	public function getSchemaId( IDatabase $db, $name ) {
 		$name = trim( $name );
@@ -84,7 +90,7 @@ class SofaSchema {
 	 * Normalize and validate schema names
 	 *
 	 * @param string $schema
-	 * @return null|string Null if invalid, otherwise the normalized schema name
+	 * @return string
 	 */
 	public static function normalizeSchema( $schema ) {
 		$schema = trim( $schema );
