@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiAbuHuraira"
+		]
+	},
+	"sofa-invalidschema": "স্কিমা নামটি অকার্যকর",
+	"sofa-invalidkey": "কি নামটি অকার্যকর",
+	"sofa-invalidvalue": "ভ্যালু এর জন্য ব্যবহৃত মানটি অকার্যকর"
+}
