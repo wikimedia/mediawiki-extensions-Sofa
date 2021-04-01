@@ -2,8 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Eduardo Addad de Oliveira",
-			"Eduardoaddad"
+			"Eduardoaddad",
+			"Mariagarbin"
 		]
 	},
-	"sofa-desc": "Uma extensão de relatório para o MediaWiki"
+	"sofa-desc": "Uma extensão de relatório para o MediaWiki",
+	"sofa-noschemakey": "Ambos os <code>esquema</code> e o <code>chave</code> devem ser especificados",
+	"sofa-invalidschema": "Nome do esquema é inválido",
+	"sofa-invalidkey": "O nome da chave é inválido.",
+	"sofa-invalidvalue": "O valor usado para o valor é inválido."
 }

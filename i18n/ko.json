@@ -4,5 +4,8 @@
 			"Ykhwong"
 		]
 	},
-	"sofa-desc": "미디어위키를 위한 보고 확장 기능"
+	"sofa-desc": "미디어위키를 위한 보고 확장 기능",
+	"sofa-invalidschema": "스키마 이름이 유효하지 않습니다.",
+	"sofa-invalidkey": "키 이름이 유효하지 않습니다.",
+	"sofa-invalidvalue": "값에 사용된 값이 유효하지 않습니다."
 }
