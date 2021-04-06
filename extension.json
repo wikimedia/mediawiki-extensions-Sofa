@@ -1,7 +1,9 @@
 {
 	"name": "Sofa",
 	"version": "0.1",
-	"author": ["..."],
+	"author": [
+		"..."
+	],
 	"url": "https://www.mediawiki.org/wiki/Extension:Sofa",
 	"descriptionmsg": "sofa-desc",
 	"type": "other",
