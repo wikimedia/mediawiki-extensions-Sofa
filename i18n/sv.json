@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiPhoenix"
+		]
+	},
+	"sofa-noschemakey": "Både <code>schema</code> och <code>key</code> måste specificeras.",
+	"sofa-invalidschema": "Schema-namnet är ogiltigt.",
+	"sofa-invalidkey": "Key-namnet är ogiltigt.",
+	"sofa-invalidvalue": "Värdet som används för value är ogiltigt."
+}
