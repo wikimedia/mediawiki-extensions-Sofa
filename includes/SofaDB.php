@@ -136,7 +136,7 @@ class SofaDB {
 		$sofaDb = $this;
 		return [
 			new MWCallableUpdate(
-				function () use ( $pageId, $sofaDb ) {
+				static function () use ( $pageId, $sofaDb ) {
 					$sofaDb->delete( $pageId );
 				},
 				__METHOD__,

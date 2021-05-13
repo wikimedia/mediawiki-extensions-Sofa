@@ -7,6 +7,9 @@
 	"url": "https://www.mediawiki.org/wiki/Extension:Sofa",
 	"descriptionmsg": "sofa-desc",
 	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.32.0"
+	},
 	"license-name": "GPL-2.0-or-later",
 	"AutoloadClasses": {
 		"SofaHooks": "includes/SofaHooks.php",

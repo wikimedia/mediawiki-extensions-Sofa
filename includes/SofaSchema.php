@@ -37,7 +37,7 @@ class SofaSchema {
 		$fname = __METHOD__;
 		return self::$cache->getWithSetCallback(
 			$name,
-			function () use ( $name, $db, $fname ) {
+			static function () use ( $name, $db, $fname ) {
 				// Note: will not cache if no results
 				$id = $db->selectField(
 					'sofa_schema',
