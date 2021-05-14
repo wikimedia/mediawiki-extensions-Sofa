@@ -133,11 +133,10 @@ class SofaDB {
 	 * @return DeferrableUpdate[]
 	 */
 	public function getDeletionUpdates( $pageId ) {
-		$sofaDb = $this;
 		return [
 			new MWCallableUpdate(
-				static function () use ( $pageId, $sofaDb ) {
-					$sofaDb->delete( $pageId );
+				function () use ( $pageId ) {
+					$this->delete( $pageId );
 				},
 				__METHOD__,
 				$this->dbw
