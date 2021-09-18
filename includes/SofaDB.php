@@ -11,7 +11,7 @@ class SofaDB {
 	 * @param SofaDBManager|null $dbm
 	 */
 	public function __construct( $dbm = null ) {
-		$this->dbw = $dbm ? $dbm->getDbw() : wfGetDB( DB_MASTER );
+		$this->dbw = $dbm ? $dbm->getDbw() : wfGetDB( DB_PRIMARY );
 	}
 
 	/**

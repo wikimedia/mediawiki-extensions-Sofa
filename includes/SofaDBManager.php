@@ -17,7 +17,7 @@ class SofaDBManager {
 	 */
 	public function __construct( $dbr = null, $dbw = null ) {
 		$this->dbr = $dbr ?: wfGetDB( DB_REPLICA );
-		$this->dbw = $dbw ?: wfGetDB( DB_MASTER );
+		$this->dbw = $dbw ?: wfGetDB( DB_PRIMARY );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class SofaDBManager {
 	}
 
 	/**
-	 * Get a DB_MASTER
+	 * Get a DB_PRIMARY
 	 *
 	 * @return IDatabase
 	 */

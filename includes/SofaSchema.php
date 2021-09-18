@@ -53,7 +53,7 @@ class SofaSchema {
 	/**
 	 * Get the schema id given name and insert if doesn't exist
 	 *
-	 * @param IDatabase $db Must be a DB_MASTER not DB_REPLICA
+	 * @param IDatabase $db Must be a DB_PRIMARY not DB_REPLICA
 	 * @param string $name The schema name
 	 * @return int
 	 */
