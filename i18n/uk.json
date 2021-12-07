@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Piramidion"
+			"Piramidion",
+			"DDPAT"
 		]
 	},
-	"sofa-desc": "Розширення MediaWiki для звітувань"
+	"sofa-desc": "Розширення MediaWiki для звітувань",
+	"sofa-noschemakey": "Необхідно вказати і <code>schema</code>, і <code>key</code>.",
+	"sofa-invalidschema": "Назва схеми недійсна.",
+	"sofa-invalidkey": "Назва ключа недійсна.",
+	"sofa-invalidvalue": "Недійсне значення, яке використовується для значення."
 }
