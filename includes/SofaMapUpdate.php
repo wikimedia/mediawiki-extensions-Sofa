@@ -31,7 +31,12 @@ class SofaMapUpdate implements DeferrableUpdate {
 			$this->title,
 			'sofa_cache',
 		);
-		JobQueueGroup::singleton()->lazyPush( $job );
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $job );
+		} else {
+			JobQueueGroup::singleton()->lazyPush( $job );
+		}
 */
 	}
 

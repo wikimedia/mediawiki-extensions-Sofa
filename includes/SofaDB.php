@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 // FIXME: This class structure made more sense in my head
 // then it does when I wrote it all out. I already think it should be refactored.
 class SofaDB {
@@ -93,14 +95,20 @@ class SofaDB {
 
 		// EVIL HACK. This seems to work but is very sketch. We might be better off
 		// duplicating code from core.
+		$jobs = [];
 		foreach ( $schemasModified as $schema ) {
 			$encTitle = Title::makeTitle( NS_SPECIAL, "Sofa/" . (string)$schema );
 			LinksUpdate::queueRecursiveJobsForTable( $encTitle, 'sofa_cache' );
-			$job = HTMLCacheUpdateJob::newForBacklinks(
+			$jobs[] = HTMLCacheUpdateJob::newForBacklinks(
 				$encTitle,
 				'sofa_cache'
 			);
-			JobQueueGroup::singleton()->lazyPush( $job );
+		}
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $jobs );
+		} else {
+			JobQueueGroup::singleton()->lazyPush( $jobs );
 		}
 	}
 
