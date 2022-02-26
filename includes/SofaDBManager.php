@@ -1,5 +1,7 @@
 <?php
 
+use Wikimedia\Rdbms\IDatabase;
+
 /**
  * Stub for now, might do more if we support sharding things in future.
  *

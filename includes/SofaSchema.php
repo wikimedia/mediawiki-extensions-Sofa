@@ -1,5 +1,7 @@
 <?php
 
+use Wikimedia\Rdbms\IDatabase;
+
 class SofaSchema {
 	/** @var SofaSchema */
 	private static $instance;

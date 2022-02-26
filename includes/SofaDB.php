@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\IDatabase;
 
 // FIXME: This class structure made more sense in my head
 // then it does when I wrote it all out. I already think it should be refactored.
