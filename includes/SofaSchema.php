@@ -101,9 +101,14 @@ class SofaSchema {
 			// empty string, but that seems like it'd be confusing.
 			throw new InvalidSofaSchemaException( "Empty string not allowed" );
 		}
+		$a = Title::makeTitleSafe( NS_SOFA, $schema );
+		if ( !$a ) {
+			throw new InvalidSofaSchemaException( "Must be a valid title" );
+		}
+		// FIXME, we're now at 255. Should change DB schema maybe?
 		if ( strlen( $schema ) > 767 ) {
 			throw new InvalidSofaSchemaException( "Too long. Cannot be over 767 bytes" );
 		}
-		return $schema;
+		return $a->getDBKey();
 	}
 }

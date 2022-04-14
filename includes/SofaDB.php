@@ -24,6 +24,8 @@ class SofaDB {
 	 * @param array $maps Array containing assoc array of 'key' and 'value'
 	 */
 	public function setForPage( Title $title, array $maps ) {
+		// FIXME, there is a possibility of indef loop, since a page
+		// can both depend on a schema and have it on itself.
 		$pageId = $title->getArticleId( Title::READ_LATEST );
 		if ( $pageId <= 0 && $maps ) {
 			// If the page is deleted, should have no maps.
@@ -55,7 +57,7 @@ class SofaDB {
 				}
 			}
 			$idsToDelete[] = $row->sm_id;
-			$schemasModified[] = $row->sm_schema;
+			$schemasModified[] = $row->sms_name;
 		}
 		$dbw->startAtomic( __METHOD__ );
 		if ( $idsToDelete ) {
@@ -74,7 +76,7 @@ class SofaDB {
 				'sm_value' => $newmap['value'],
 				'sm_schema' => $schemaId,
 			];
-			$schemasModified[] = $schemaId;
+			$schemasModified[] = $newmap['schema'];
 		}
 		$dbw->insert( 'sofa_map', $inserts, __METHOD__ );
 		$dbw->endAtomic( __METHOD__ );
@@ -88,7 +90,7 @@ class SofaDB {
 	 * We use a hack of clearing a page named Special:<schema number>. See the BacklinkCache
 	 * hooks for details on how that works.
 	 *
-	 * @param int[] $schemasModified Which schemas were changed.
+	 * @param string[] $schemasModified Which schemas were changed.
 	 */
 	private function queueCacheInvalidationJobs( array $schemasModified ) {
 		// We don't have causeAction or causeAgent known to us due to the way hooks
@@ -98,7 +100,8 @@ class SofaDB {
 		// duplicating code from core.
 		$jobs = [];
 		foreach ( $schemasModified as $schema ) {
-			$encTitle = Title::makeTitle( NS_SPECIAL, "Sofa/" . (string)$schema );
+			// FIXME this doesn't adequetely defend against indef loops.
+			$encTitle = Title::makeTitle( NS_SOFA, $schema );
 			LinksUpdate::queueRecursiveJobsForTable( $encTitle, 'sofa_cache' );
 			$jobs[] = HTMLCacheUpdateJob::newForBacklinks(
 				$encTitle,
@@ -160,9 +163,9 @@ class SofaDB {
 	 */
 	public function delete( $pageId ) {
 		$schemas = $this->dbw->selectFieldValues(
-			'sofa_map',
-			'sm_schema',
-			[ 'sm_page' => $pageId ],
+			[ 'sofa_map', 'sofa_schema' ],
+			'sms_name',
+			[ 'sm_page' => $pageId, 'sms_id=sm_id' ],
 			__METHOD__,
 			[ 'DISTINCT' ]
 		);
@@ -243,12 +246,11 @@ class SofaDB {
 
 		$dbr = wfGetDB( DB_REPLICA );
 		if ( $table === 'sofa_cache' ) {
-			// HACK HACK HACK
-			// Store schemas as Special:Sofa/<schemaid>
-			$schema = self::getSchemaFromEncodedTitle( $title );
+			$schema = self::getSchemaFromEncodedTitle( $title, $dbr );
 			if ( $schema ) {
 				$subquery = $schema;
 			} else {
+				wfWarn( "Doing backlinks without a schema name??" );
 				// This doesn't really work because the current state of
 				// the page doesn't reflect what schemas used to be set there.
 				$subquery = $dbr->selectSQLText(
@@ -270,21 +272,23 @@ class SofaDB {
 	}
 
 	/**
-	 * Given a Title of the form Special:Sofa/<schemaid> get the schema
+	 * Given a Title of the form Sofa:SchemaName get subquery to get id
 	 *
-	 * @param Title $title e.g. Special:Sofa/1234
-	 * @return int|bool The schema id or false
+	 * @param Title $title e.g. Sofa:Foo
+	 * @param IDatabase $dbr
+	 * @return string|false Subquery
 	 */
-	private static function getSchemaFromEncodedTitle( Title $title ) {
-		if ( !$title->inNamespace( NS_SPECIAL ) ) {
+	private static function getSchemaFromEncodedTitle( Title $title, IDatabase $dbr ) {
+		if ( !$title->inNamespace( NS_SOFA ) ) {
 			return false;
 		}
 
-		$pageParts = explode( '/', $title->getDBKey(), 2 );
+		$schemaName = $title->getDBKey();
 
-		if ( count( $pageParts ) !== 2 || $pageParts[0] !== 'Sofa' || !is_numeric( $pageParts[1] ) ) {
-			return false;
-		}
-		return (int)$pageParts[1];
+		return $dbr->selectSQLText(
+			'sofa_schema',
+			'sms_id',
+			[ 'sms_name' => $schemaName ]
+		);
 	}
 }

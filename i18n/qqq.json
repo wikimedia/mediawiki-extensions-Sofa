@@ -6,5 +6,7 @@
 	"sofa-noschemakey": "Error message from parser function",
 	"sofa-invalidschema": "Error message from parser function",
 	"sofa-invalidkey": "Error message from parser function",
-	"sofa-invalidvalue": "Error message from parser function"
+	"sofa-invalidvalue": "Error message from parser function",
+	"action-sofa-edit": "{{doc-action|sofa-edit}}\n\nEdit pages in Sofa: namespace that describe a particular sofa schema.",
+	"right-sofa-edit": "{{doc-right|sofa-edit}}\n\nEdit pages in Sofa: namespace that describe a particular sofa schema"
 }

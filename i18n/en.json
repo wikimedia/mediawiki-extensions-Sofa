@@ -8,5 +8,7 @@
 	"sofa-noschemakey": "Both the <code>schema</code> and the <code>key</code> must be specified.",
 	"sofa-invalidschema": "Schema name is invalid.",
 	"sofa-invalidkey": "Key name is invalid.",
-	"sofa-invalidvalue": "Value used for value is invalid."
+	"sofa-invalidvalue": "Value used for value is invalid.",
+	"right-sofa-edit": "Edit Sofa schema pages",
+	"action-sofa-edit": "edit Sofa schema page"
 }

@@ -2,7 +2,7 @@
 	"name": "Sofa",
 	"version": "0.1",
 	"author": [
-		"..."
+		"Brian Wolff"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:Sofa",
 	"descriptionmsg": "sofa-desc",
@@ -19,7 +19,8 @@
 		"SofaSchema": "includes/SofaSchema.php",
 		"SofaDBManager": "includes/SofaDBManager.php",
 		"SofaFetch": "includes/SofaFetch.php",
-		"SofaCacheUpdate": "includes/SofaCacheUpdate.php"
+		"SofaCacheUpdate": "includes/SofaCacheUpdate.php",
+		"SofaContentHandler": "includes/SofaContentHandler.php"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": [
@@ -46,8 +47,34 @@
 			"i18n"
 		]
 	},
+	"namespaces": [
+		{
+			"id": 940,
+			"constant": "NS_SOFA",
+			"name": "Sofa",
+			"defaultcontentmodel": "Sofa",
+			"protection": "sofa-edit",
+			"movable": false
+		},
+		{
+			"id": 941,
+			"constant": "NS_SOFA_TALK",
+			"name": "Sofa_talk"
+		}
+	],
+	"ContentHandlers": {
+		"Sofa": "SofaContentHandler"
+	},
 	"ExtensionMessagesFiles": {
 		"SofaMagic": "Sofa.i18n.magic.php"
+	},
+	"AvailableRights": [
+		"sofa-edit"
+	],
+	"GroupPermissions": {
+		"sysop": {
+			"sofa-edit": true
+		}
 	},
 	"config": {
 	},

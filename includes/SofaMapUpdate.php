@@ -22,22 +22,6 @@ class SofaMapUpdate implements DeferrableUpdate {
 		foreach ( $updates as $update ) {
 			$update->doUpdate();
 		}
-		// We don't have causeAction or causeAgent known to us due to the way hooks
-		// are structured.
-		// FIXME: This will refresh things modified or added, but does not refresh
-		// things deleted.
-		/*LinksUpdate::queueRecursiveJobsForTable( $this->title, 'sofa_cache' );
-		$job = HTMLCacheUpdateJob::newForBacklinks(
-			$this->title,
-			'sofa_cache',
-		);
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $job );
-		} else {
-			JobQueueGroup::singleton()->lazyPush( $job );
-		}
-*/
 	}
 
 }
