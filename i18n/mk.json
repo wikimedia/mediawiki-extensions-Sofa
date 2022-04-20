@@ -8,5 +8,7 @@
 	"sofa-noschemakey": "Мора да се укажат и <code>schema</code> и <code>key</code>.",
 	"sofa-invalidschema": "Шемата има неважечки назив.",
 	"sofa-invalidkey": "Клучот има неважечки назив.",
-	"sofa-invalidvalue": "Укажаната вредност е неважечка."
+	"sofa-invalidvalue": "Укажаната вредност е неважечка.",
+	"right-sofa-edit": "Уредување на шематски страници на Sofa",
+	"action-sofa-edit": "уредување на шематски страници на Sofa"
 }
