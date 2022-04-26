@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"DiegoAmbrocio"
+		]
+	},
+	"sofa-invalidschema": "El nombre del esquema no es válido.",
+	"sofa-invalidkey": "El nombre de la clave no es válido.",
+	"sofa-invalidvalue": "El valor utilizado para el valor no es válido."
+}
