@@ -196,4 +196,14 @@ class SofaHooks {
 		$sofaDB = new SofaDB;
 		$updates = array_merge( $updates, $sofaDB->getDeletionUpdates( $id ) );
 	}
+
+	/**
+	 * Hook to load our lua library
+	 *
+	 * @param string $engine
+	 * @param array &$extraLibraries
+	 */
+	public static function onScribuntoExternalLibraries( $engine, &$extraLibraries ) {
+		$extraLibraries['mw.ext.sofa'] = SofaLuaLibrary::class;
+	}
 }

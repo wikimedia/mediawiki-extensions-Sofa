@@ -8,7 +8,10 @@
 	"descriptionmsg": "sofa-desc",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.35.3"
+		"MediaWiki": ">= 1.35.3",
+		"extensions": {
+			"Scribunto": "*"
+		}
 	},
 	"license-name": "GPL-2.0-or-later",
 	"AutoloadClasses": {
@@ -20,7 +23,8 @@
 		"SofaDBManager": "includes/SofaDBManager.php",
 		"SofaFetch": "includes/SofaFetch.php",
 		"SofaCacheUpdate": "includes/SofaCacheUpdate.php",
-		"SofaContentHandler": "includes/SofaContentHandler.php"
+		"SofaContentHandler": "includes/SofaContentHandler.php",
+		"SofaLuaLibrary": "includes/SofaLuaLibrary.php"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": [
@@ -40,6 +44,9 @@
 		],
 		"BacklinkCacheGetConditions": [
 			"SofaDB::onBacklinkCacheGetConditions"
+		],
+		"ScribuntoExternalLibraries": [
+			"SofaHooks::onScribuntoExternalLibraries"
 		]
 	},
 	"MessagesDirs": {
