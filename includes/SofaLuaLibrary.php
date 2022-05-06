@@ -61,6 +61,7 @@ class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
 
 		$sf = new SofaFetch;
 		$res = $sf->get( $schema, $start, $stop, $limit );
+		$cacheInfo = $this->getParser()->getOutput()->getExtensionData( 'SofaCacheInfo' ) ?: [];
 
 		$luaResults = [ null ];
 		foreach ( $res as $item ) {
@@ -76,10 +77,10 @@ class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
 				// FIXME, this has to be formatted and split into multiple values
 				'key' => $item->sm_key
 			];
+			$cacheInfo[$item->sm_id] = true;
 		}
 
-		// FIXME: Cache management, but that has to be
-		// rewritten first.
+		$this->getParser()->getOutput()->setExtensionData( 'SofaCacheInfo', $cacheInfo );
 		unset( $luaResults[0] );
 		return [ $luaResults ];
 	}

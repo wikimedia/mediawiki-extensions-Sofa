@@ -34,7 +34,7 @@ class SofaFetch {
 
 		$res = $dbr->select(
 			[ 'sofa_map', 'sofa_schema' ],
-			[ 'sm_key', 'sm_value', 'sm_page' ],
+			[ 'sm_key', 'sm_value', 'sm_page', 'sm_id' ],
 			$conds,
 			__METHOD__,
 			[

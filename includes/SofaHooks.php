@@ -117,6 +117,7 @@ class SofaHooks {
 		$last = null;
 		$count = $res->numRows();
 		$out = '';
+		$cacheInfo = $parser->getOutput()->getExtensionData( 'SofaCacheInfo' ) ?: [];
 		foreach ( $res as $row ) {
 			$last = $row->sm_key;
 
@@ -131,20 +132,8 @@ class SofaHooks {
 			if ( $row->sm_value !== null ) {
 				$out .= ':' . wfEscapeWikiText( $row->sm_value ) . "\n";
 			}
+			$cacheInfo[$row->sm_id] = true;
 		}
-		$cacheInfo = [ $schema => [] ];
-		if ( $count === $limit ) {
-			// We stopped due to limit.
-			// So new results between $start and first result will invalidate page cache
-			// but new results after $last but before $stop will not.
-			$cacheInfo[$schema][] = [ $start, $last ];
-		} else {
-			// We stopped due to $stop
-			$cacheInfo[$schema][] = [ $start, $stop ];
-		}
-		$curCacheInfo = $parser->getOutput()->getExtensionData( 'SofaCacheInfo' ) ?: [];
-		$cacheInfo[$schema] = array_merge( $curCacheInfo[$schema] ?? [], $cacheInfo[$schema] );
-		$cacheInfo = array_merge( $curCacheInfo, $cacheInfo );
 		$parser->getOutput()->setExtensionData( 'SofaCacheInfo', $cacheInfo );
 		return $out;
 	}

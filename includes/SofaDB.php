@@ -7,6 +7,8 @@ use Wikimedia\Rdbms\IDatabase;
 // then it does when I wrote it all out. I already think it should be refactored.
 class SofaDB {
 
+	public const SOFA_CACHE_HTML_ONLY = 0;
+	public const SOFA_CACHE_LINKS = 0;
 	/** @var IDatabase */
 	private $dbw;
 
@@ -43,7 +45,6 @@ class SofaDB {
 		// This could be made more efficient
 		// Keep in mind, having duplicate entries with same key/value is allowed.
 		$idsToDelete = [];
-		$schemasModified = [];
 		foreach ( $cur as $row ) {
 			foreach ( $maps as &$newmap ) {
 				if (
@@ -57,7 +58,6 @@ class SofaDB {
 				}
 			}
 			$idsToDelete[] = $row->sm_id;
-			$schemasModified[] = $row->sms_name;
 		}
 		$dbw->startAtomic( __METHOD__ );
 		if ( $idsToDelete ) {
@@ -65,6 +65,7 @@ class SofaDB {
 		}
 		$inserts = [];
 		$sofaSchema = SofaSchema::singleton();
+		$invalidationsToExpand = [];
 		foreach ( $maps as $newmap ) {
 			if ( $newmap === null ) {
 				continue;
@@ -76,32 +77,114 @@ class SofaDB {
 				'sm_value' => $newmap['value'],
 				'sm_schema' => $schemaId,
 			];
-			$schemasModified[] = $newmap['schema'];
+			if ( !isset( $invalidationsToExpand[$schemaId] ) ) {
+				$invalidationsToExpand[$schemaId] = [];
+			}
+			$invalidationsToExpand[$schemaId][] = $newmap['key'];
 		}
 		$dbw->insert( 'sofa_map', $inserts, __METHOD__ );
 		$dbw->endAtomic( __METHOD__ );
-		$schemasModified = array_unique( $schemasModified );
-		$this->queueCacheInvalidationJobs( $schemasModified );
+
+		$additionalInvalidations = $this->expandInvalidations( $invalidationsToExpand );
+		$invalidations = array_merge( $additionalInvalidations, $idsToDelete );
+		$invalidations = array_unique( $invalidations );
+		$this->queueCacheInvalidationJobs( $invalidations );
+	}
+
+	/**
+	 * Add the item immediately above and below for invalidation
+	 *
+	 * Since most pages use a range, we want to ensure we also clear
+	 * cache of pages that use a range that ends in the middle of
+	 * existing items. To do that, we clear the item immediately
+	 * above and below the new item to purge the "gaps".
+	 *
+	 * Its not clear if this is the best place to do the expanding.
+	 * it might make more sense to do so in onBacklinkCacheGetConditions
+	 * since there is likely to be a lot of duplication in the results.
+	 *
+	 * @param array $invalidations [ schema => [keys] ]
+	 * @return int[] ids
+	 */
+	private function expandInvalidations( array $invalidations ) {
+		// FIXME, do we need to batch these? Should this be in a job?
+		// somewhere else? I'm not super happy with this tbh.
+		$queries = [];
+		foreach ( $invalidations as $schema => $keys ) {
+			foreach ( $keys as $key ) {
+				// It's possible we have multiple items with same key
+				$queries[] = $this->dbw->selectSQLText(
+					'sofa_map',
+					'sm_id',
+					[
+						'sm_schema' => $schema,
+						'sm_key =' . $this->dbw->addQuotes( $key )
+					],
+					__METHOD__
+				);
+				$queries[] = $this->dbw->selectSQLText(
+					'sofa_map',
+					'sm_id',
+					[
+						'sm_schema' => $schema,
+						'sm_key >' . $this->dbw->addQuotes( $key )
+					],
+					__METHOD__,
+					[
+						'LIMIT' => 1,
+						'ORDER BY' => 'sm_key ASC'
+					]
+				);
+				$queries[] = $this->dbw->selectSQLText(
+					'sofa_map',
+					'sm_id',
+					[
+						'sm_schema' => $schema,
+						'sm_key <' . $this->dbw->addQuotes( $key )
+					],
+					__METHOD__,
+					[
+						'LIMIT' => 1,
+						'ORDER BY' => 'sm_key DESC'
+					]
+				);
+			}
+		}
+		if ( !$queries ) {
+			return [];
+		}
+		$unionQuery = $this->dbw->unionQueries( $queries, $this->dbw::UNION_ALL );
+		$res = $this->dbw->query( $unionQuery, __METHOD__ );
+		$ids = [];
+		foreach ( $res as $row ) {
+			$ids[] = $row->sm_id;
+		}
+		return $ids;
 	}
 
 	/**
 	 * Queue job to clear page caches that might be out of date due to edit.
 	 *
-	 * We use a hack of clearing a page named Special:<schema number>. See the BacklinkCache
+	 * We use a hack of clearing a page named Sofa:Cache/<mapid>. See the BacklinkCache
 	 * hooks for details on how that works.
 	 *
-	 * @param string[] $schemasModified Which schemas were changed.
+	 * @param array $idsToPurge sc_id's to purge
 	 */
-	private function queueCacheInvalidationJobs( array $schemasModified ) {
+	private function queueCacheInvalidationJobs( array $idsToPurge ) {
 		// We don't have causeAction or causeAgent known to us due to the way hooks
 		// are structured.
 
 		// EVIL HACK. This seems to work but is very sketch. We might be better off
 		// duplicating code from core.
 		$jobs = [];
-		foreach ( $schemasModified as $schema ) {
+		foreach ( $idsToPurge as $id ) {
 			// FIXME this doesn't adequetely defend against indef loops.
-			$encTitle = Title::makeTitle( NS_SOFA, $schema );
+			// Future, maybe we should have multiple map ids at once
+			$encTitle = Title::makeTitle( NS_SOFA, 'Cache' . '/' . $id );
+			// At one point, i considered trying to tell if any metadata
+			// depended on this, and only do html cache update in that case.
+			// It doesn't seem worth it for just the list output, but might
+			// revisit in future.
 			LinksUpdate::queueRecursiveJobsForTable( $encTitle, 'sofa_cache' );
 			$jobs[] = HTMLCacheUpdateJob::newForBacklinks(
 				$encTitle,
@@ -162,12 +245,11 @@ class SofaDB {
 	 * @param int $pageId Id of page to delete stuff for
 	 */
 	public function delete( $pageId ) {
-		$schemas = $this->dbw->selectFieldValues(
+		$res = $this->dbw->select(
 			[ 'sofa_map', 'sofa_schema' ],
-			'sms_name',
-			[ 'sm_page' => $pageId, 'sms_id=sm_id' ],
-			__METHOD__,
-			[ 'DISTINCT' ]
+			[ 'sms_name', 'sm_id', 'sm_key' ],
+			[ 'sm_page' => $pageId, 'sms_id=sm_schema' ],
+			__METHOD__
 		);
 		$this->dbw->delete(
 			'sofa_map',
@@ -179,7 +261,13 @@ class SofaDB {
 			[ 'sc_from' => $pageId ],
 			__METHOD__
 		);
-		$this->queueCacheInvalidationJobs( $schemas );
+
+		// Since we are deleting we do not need to purge gaps.
+		$invalidations = [];
+		foreach ( $res as $row ) {
+			$invalidations[] = $row->sm_id;
+		}
+		$this->queueCacheInvalidationJobs( $invalidations );
 	}
 
 	/**
@@ -195,7 +283,8 @@ class SofaDB {
 			// empty string, but that seems like it'd be confusing.
 			return null;
 		}
-		if ( strlen( $key ) > 767 ) {
+		// Leave a little room for subpage hack
+		if ( strlen( $key ) > 240 ) {
 			return null;
 		}
 		return $key;
@@ -246,49 +335,32 @@ class SofaDB {
 
 		$dbr = wfGetDB( DB_REPLICA );
 		if ( $table === 'sofa_cache' ) {
-			$schema = self::getSchemaFromEncodedTitle( $title, $dbr );
-			if ( $schema ) {
-				$subquery = $schema;
-			} else {
-				wfWarn( "Doing backlinks without a schema name??" );
-				// This doesn't really work because the current state of
-				// the page doesn't reflect what schemas used to be set there.
-				$subquery = $dbr->selectSQLText(
-					'sofa_map',
-					'sm_schema',
-					[
-						'sm_page' => $title->getArticleId()
-					]
-				);
-			}
+			$id = self::getIdsFromEncodedTitle( $title, $dbr );
 			$conds = [
-				// FIXME no conditions on sc_start or sc_stop? We probably
-				// refresh way more than we have to.
-				'sc_schema IN (' . $subquery . ')',
 				'page_id=sc_from',
+				'sc_map_id' => $id
 			];
 		}
 		return false;
 	}
 
 	/**
-	 * Given a Title of the form Sofa:SchemaName get subquery to get id
+	 * Given a Title of the form Sofa:SchemaName get subquery to get schema id, and map_ids
 	 *
-	 * @param Title $title e.g. Sofa:Foo
+	 * @param Title $title e.g. Sofa:Foo/1234
 	 * @param IDatabase $dbr
-	 * @return string|false Subquery
+	 * @return int Id
 	 */
-	private static function getSchemaFromEncodedTitle( Title $title, IDatabase $dbr ) {
+	private static function getIdsFromEncodedTitle( Title $title, IDatabase $dbr ) {
 		if ( !$title->inNamespace( NS_SOFA ) ) {
-			return false;
+			throw new UnexpectedValueException( "Expected NS to be NS_SOFA" );
 		}
 
-		$schemaName = $title->getDBKey();
+		list( $pageName, $id ) = explode( '/', $title->getDBKey(), 2 );
+		if ( $id === null || $pageName !== 'Cache' || (int)$id <= 0 ) {
+			throw new UnexpectedValueException( "invalid title format" );
+		}
 
-		return $dbr->selectSQLText(
-			'sofa_schema',
-			'sms_id',
-			[ 'sms_name' => $schemaName ]
-		);
+		return (int)$id;
 	}
 }

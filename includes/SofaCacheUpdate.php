@@ -13,37 +13,28 @@ class SofaCacheUpdate implements DeferrableUpdate {
 	private $title;
 	/** @var SofaDBManager */
 	private $dbm;
-	/** @var SofaSchema */
-	private $schema;
 
 	/**
 	 * @param Title $title
-	 * @param array $scache
+	 * @param array $scache Array of int=>true of sm_id's used.
 	 * @param SofaDBManager|null $dbm Null for default instance
-	 * @param SofaSchema|null $schema Null for default instance
+	 * @param-taint $scache none
 	 */
-	public function __construct( Title $title, array $scache, $dbm = null, $schema = null ) {
+	public function __construct( Title $title, array $scache, $dbm = null ) {
 		$this->title = $title;
 		$this->scache = $scache;
 		$this->dbm = $dbm ?: SofaDBManager::singleton();
-		$this->schema = $schema ?: SofaSchema::singleton();
 	}
 
 	public function doUpdate() {
 		$dbw = $this->dbm->getDbw();
 		$pageId = $this->title->getArticleID( Title::READ_LATEST );
 		$inserts = [];
-		foreach ( $this->scache as $schema => $values ) {
-			$schemaId = $this->schema->getOrCreateSchemaId( $dbw, $schema );
-			foreach ( $values as $startStop ) {
-				list( $start, $stop ) = $startStop;
-				$inserts[] = [
-					'sc_from' => $pageId,
-					'sc_schema' => $schemaId,
-					'sc_start' => $start,
-					'sc_stop' => $stop
-				];
-			}
+		foreach ( $this->scache as $smId => $_ ) {
+			$inserts[] = [
+				'sc_from' => $pageId,
+				'sc_map_id' => $smId,
+			];
 		}
 		// FIXME Maybe this should avoid deleting rows that stay constant.
 		$dbw->delete(
