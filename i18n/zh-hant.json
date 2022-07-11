@@ -8,5 +8,7 @@
 	"sofa-noschemakey": "必須指定 <code>schema</code> 與 <code>key</code> 兩者。",
 	"sofa-invalidschema": "Schema 名稱無效。",
 	"sofa-invalidkey": "Key 名稱無效。",
-	"sofa-invalidvalue": "用於 value 的值無效。"
+	"sofa-invalidvalue": "用於 value 的值無效。",
+	"right-sofa-edit": "編輯 Sofa 架構頁面",
+	"action-sofa-edit": "編輯 Sofa 架構頁面"
 }
