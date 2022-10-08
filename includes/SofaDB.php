@@ -195,6 +195,7 @@ class SofaDB {
 			// MW 1.37+
 			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $jobs );
 		} else {
+			// @phan-suppress-next-line PhanUndeclaredStaticMethod
 			JobQueueGroup::singleton()->lazyPush( $jobs );
 		}
 	}
