@@ -4,5 +4,11 @@
 			"Meno25"
 		]
 	},
-	"sofa-desc": "امتداد للإبلاغ لميدياويكي"
+	"sofa-desc": "امتداد للإبلاغ لميدياويكي",
+	"sofa-noschemakey": "يجب تحديد كل من <code>schema</code> <code>key</code> .",
+	"sofa-invalidschema": "اسم المخطط غير صالح.",
+	"sofa-invalidkey": "اسم المفتاح غير صالح.",
+	"sofa-invalidvalue": "القيمة المستخدمة للقيمة غير صالحة.",
+	"right-sofa-edit": "تحرير صفحات مخطط صوفا",
+	"action-sofa-edit": "تحرير صفحة مخطط صوفا"
 }
