@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"sofa-desc": "Un extension de reportage pro MediaWiki",
+	"sofa-noschemakey": "Tanto <code>schema</code> como <code>key</code> debe esser specificate.",
+	"sofa-invalidschema": "Le nomine del schema es invalide.",
+	"sofa-invalidkey": "Le nomine del clave es invalide.",
+	"sofa-invalidvalue": "Le valor usate pro \"value\" es invalide.",
+	"right-sofa-edit": "Modificar paginas de schema Sofa",
+	"action-sofa-edit": "modificar le pagina de schema Sofa"
+}
