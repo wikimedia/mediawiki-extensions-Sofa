@@ -4,5 +4,11 @@
 			"Hamilton Abreu"
 		]
 	},
-	"sofa-desc": "Uma extensão de relatórios para o MediaWiki"
+	"sofa-desc": "Uma extensão de relatórios para o MediaWiki",
+	"sofa-noschemakey": "Tanto o <code>schema</code> como o <code>key</code> têm de ser especificados.",
+	"sofa-invalidschema": "O nome do esquema é inválido.",
+	"sofa-invalidkey": "O nome da chave é inválido.",
+	"sofa-invalidvalue": "O valor usado é inválido.",
+	"right-sofa-edit": "Editar páginas de esquema Sofa",
+	"action-sofa-edit": "editar página de esquema Sofa"
 }
