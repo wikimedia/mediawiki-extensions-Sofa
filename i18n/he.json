@@ -8,5 +8,7 @@
 	"sofa-noschemakey": "חובה לציין את <code>schema</code> ואת <code>key</code>.",
 	"sofa-invalidschema": "שם הסכֵמה אינו תקין.",
 	"sofa-invalidkey": "שם המפתח אינו תקין.",
-	"sofa-invalidvalue": "הערך של ערך אינו תקין."
+	"sofa-invalidvalue": "הערך של ערך אינו תקין.",
+	"right-sofa-edit": "עריכת דפי סכֵמת Sofa",
+	"action-sofa-edit": "לערוך דפי סכֵמת Sofa"
 }
