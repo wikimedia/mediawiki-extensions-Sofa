@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"sofa-desc": "Razširitev MediaWiki za poročanje",
+	"sofa-noschemakey": "Določena morata biti tako <code>schema</code> kot <code>key</code>.",
+	"sofa-invalidschema": "To ime sheme ni veljavno.",
+	"sofa-invalidkey": "To ime ključa ni veljavno.",
+	"sofa-invalidvalue": "Vrednost, uporabljena za »value«, ni veljavna."
+}
