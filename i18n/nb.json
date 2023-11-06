@@ -4,5 +4,11 @@
 			"Jon Harald Søby"
 		]
 	},
-	"sofa-desc": "En rapporteringsutvidelse for MediaWiki"
+	"sofa-desc": "En rapporteringsutvidelse for MediaWiki",
+	"sofa-noschemakey": "Både <code>schema</code> og <code>key</code> må angis.",
+	"sofa-invalidschema": "Skjemanavnet er ugyldig.",
+	"sofa-invalidkey": "Nøkkelnavnet er ugyldig.",
+	"sofa-invalidvalue": "Verdien som er brukt er ugyldig.",
+	"right-sofa-edit": "Redigere Sofa-skjemasider",
+	"action-sofa-edit": "redigere Sofa-skjemasider"
 }
