@@ -94,7 +94,7 @@ class SofaHooks {
 			if ( !strpos( $param, '=' ) ) {
 				continue;
 			}
-			list( $left, $right ) = explode( "=", trim( $param ), 2 );
+			[ $left, $right ] = explode( "=", trim( $param ), 2 );
 			switch ( trim( $left ) ) {
 				case 'start':
 					$start = trim( $right );

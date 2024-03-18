@@ -357,7 +357,7 @@ class SofaDB {
 			throw new UnexpectedValueException( "Expected NS to be NS_SOFA" );
 		}
 
-		list( $pageName, $id ) = explode( '/', $title->getDBKey(), 2 );
+		[ $pageName, $id ] = explode( '/', $title->getDBKey(), 2 );
 		if ( $id === null || $pageName !== 'Cache' || (int)$id <= 0 ) {
 			throw new UnexpectedValueException( "invalid title format" );
 		}
