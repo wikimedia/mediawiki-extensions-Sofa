@@ -28,7 +28,7 @@ class SofaCacheUpdate implements DeferrableUpdate {
 
 	public function doUpdate() {
 		$dbw = $this->dbm->getDbw();
-		$pageId = $this->title->getArticleID( Title::READ_LATEST );
+		$pageId = $this->title->getArticleID( IDBAccessObject::READ_LATEST );
 		$inserts = [];
 		foreach ( $this->scache as $smId => $_ ) {
 			$inserts[] = [

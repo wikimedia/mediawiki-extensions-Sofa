@@ -29,7 +29,7 @@ class SofaDB {
 	public function setForPage( Title $title, array $maps ) {
 		// FIXME, there is a possibility of indef loop, since a page
 		// can both depend on a schema and have it on itself.
-		$pageId = $title->getArticleId( Title::READ_LATEST );
+		$pageId = $title->getArticleId( IDBAccessObject::READ_LATEST );
 		if ( $pageId <= 0 && $maps ) {
 			// If the page is deleted, should have no maps.
 			// Currently not used to refresh for page delete, but maybe
