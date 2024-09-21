@@ -17,7 +17,8 @@ class SofaDB {
 	 * @param SofaDBManager|null $dbm
 	 */
 	public function __construct( $dbm = null ) {
-		$this->dbw = $dbm ? $dbm->getDbw() : wfGetDB( DB_PRIMARY );
+		$this->dbw = $dbm ? $dbm->getDbw()
+			: MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_PRIMARY );
 	}
 
 	/**
@@ -335,7 +336,7 @@ class SofaDB {
 		// This is hacky because the core backlinks abstraction doesn't work the way i want
 		// it to. In the long run, we may have to duplicate core's BacklinkUtils.
 
-		$dbr = wfGetDB( DB_REPLICA );
+		$dbr = MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
 		if ( $table === 'sofa_cache' ) {
 			$id = self::getIdsFromEncodedTitle( $title, $dbr );
 			$conds = [
