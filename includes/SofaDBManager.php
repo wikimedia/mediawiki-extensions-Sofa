@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
@@ -18,8 +19,8 @@ class SofaDBManager {
 	 * @param IDatabase|null $dbw read-write db handle.
 	 */
 	public function __construct( $dbr = null, $dbw = null ) {
-		$this->dbr = $dbr ?: wfGetDB( DB_REPLICA );
-		$this->dbw = $dbw ?: wfGetDB( DB_PRIMARY );
+		$this->dbr = $dbr ?: MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		$this->dbw = $dbw ?: MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_PRIMARY );
 	}
 
 	/**
