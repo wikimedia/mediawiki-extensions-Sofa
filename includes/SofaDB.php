@@ -3,6 +3,7 @@
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 // FIXME: This class structure made more sense in my head
 // then it does when I wrote it all out. I already think it should be refactored.
@@ -115,48 +116,44 @@ class SofaDB {
 		foreach ( $invalidations as $schema => $keys ) {
 			foreach ( $keys as $key ) {
 				// It's possible we have multiple items with same key
-				$queries[] = $this->dbw->selectSQLText(
-					'sofa_map',
-					'sm_id',
-					[
+				$queries[] = $this->dbw->newSelectQueryBuilder()
+					->select( 'sm_id' )
+					->from( 'sofa_map' )
+					->where( [
 						'sm_schema' => $schema,
 						'sm_key =' . $this->dbw->addQuotes( $key )
-					],
-					__METHOD__
-				);
-				$queries[] = $this->dbw->selectSQLText(
-					'sofa_map',
-					'sm_id',
-					[
+					] )
+					->caller( __METHOD__ );
+				$queries[] = $this->dbw->newSelectQueryBuilder()
+					->select( 'sm_id' )
+					->from( 'sofa_map' )
+					->where( [
 						'sm_schema' => $schema,
 						'sm_key >' . $this->dbw->addQuotes( $key )
-					],
-					__METHOD__,
-					[
-						'LIMIT' => 1,
-						'ORDER BY' => 'sm_key ASC'
-					]
-				);
-				$queries[] = $this->dbw->selectSQLText(
-					'sofa_map',
-					'sm_id',
-					[
+					] )
+					->limit( 1 )
+					->orderBy( 'sm_key', SelectQueryBuilder::SORT_ASC )
+					->caller( __METHOD__ );
+				$queries[] = $this->dbw->newSelectQueryBuilder()
+					->select( 'sm_id' )
+					->from( 'sofa_map' )
+					->where( [
 						'sm_schema' => $schema,
 						'sm_key <' . $this->dbw->addQuotes( $key )
-					],
-					__METHOD__,
-					[
-						'LIMIT' => 1,
-						'ORDER BY' => 'sm_key DESC'
-					]
-				);
+					] )
+					->limit( 1 )
+					->orderBy( 'sm_key', SelectQueryBuilder::SORT_DESC )
+					->caller( __METHOD__ );
 			}
 		}
 		if ( !$queries ) {
 			return [];
 		}
-		$unionQuery = $this->dbw->unionQueries( $queries, $this->dbw::UNION_ALL );
-		$res = $this->dbw->query( $unionQuery, __METHOD__ );
+		$unionQuery = $this->dbw->newUnionQueryBuilder();
+		foreach ( $queries as $query ) {
+			$unionQuery->add( $query );
+		}
+		$res = $unionQuery->caller( __METHOD__ )->all()->fetchResultSet();
 		$ids = [];
 		foreach ( $res as $row ) {
 			$ids[] = $row->sm_id;
