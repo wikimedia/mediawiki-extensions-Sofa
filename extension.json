@@ -8,7 +8,7 @@
 	"descriptionmsg": "sofa-desc",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.38",
+		"MediaWiki": ">= 1.40",
 		"extensions": {
 			"Scribunto": "*"
 		}

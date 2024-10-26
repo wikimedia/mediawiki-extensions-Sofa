@@ -1,6 +1,9 @@
 <?php
 
-class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
+use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LibraryBase;
+use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LuaError;
+
+class SofaLuaLibrary extends LibraryBase {
 
 	/**
 	 * @return array|null
@@ -30,7 +33,7 @@ class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
 
 		if ( $this->getLuaType( $args['schema'] ?? false ) !== 'string' ) {
 			// FIXME should errors in lua be i18n??
-			throw new Scribunto_LuaError( "mw.ext.sofa.query() expects schema to be set and be a string" );
+			throw new LuaError( "mw.ext.sofa.query() expects schema to be set and be a string" );
 		}
 		if ( $this->getLuaType(
 			$args['limit'] ?? 0 ) !== 'number' ||
@@ -39,7 +42,7 @@ class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
 			( $args['limit'] ?? 1 ) >= 5000
 		) {
 			// FIXME upper limit should not be hardcoded.
-			throw new Scribunto_LuaError( "mw.ext.sofa.query() expects limit to be a number" );
+			throw new LuaError( "mw.ext.sofa.query() expects limit to be a number" );
 		}
 
 		// FIXME validate start and stop. Need to figure
@@ -52,7 +55,7 @@ class SofaLuaLibrary extends Scribunto_LuaLibraryBase {
 
 		} catch ( InvalidSofaSchemaException $e ) {
 			// FIXME, should this be i18n?
-			throw new Scribunto_LuaError( wfMessage( 'sofa-invalidschema' )->inContentLanguage()->text() );
+			throw new LuaError( wfMessage( 'sofa-invalidschema' )->inContentLanguage()->text() );
 		}
 
 		$limit = is_int( $args['limit'] ) ? $args['limit'] : 25;
