@@ -28,6 +28,7 @@ class SofaLuaLibrary extends LibraryBase {
 	 *
 	 * @param array $args List of args: schema, start, stop, limit
 	 * @return array
+	 * @throws LuaError
 	 */
 	public function query( $args ) {
 		$this->checkType( 'query', 1, $args, 'table' );
@@ -54,7 +55,7 @@ class SofaLuaLibrary extends LibraryBase {
 		try {
 			$schema = SofaSchema::normalizeSchema( $args['schema'] );
 
-		} catch ( InvalidSofaSchemaException $e ) {
+		} catch ( InvalidSofaSchemaException ) {
 			// FIXME, should this be i18n?
 			throw new LuaError( wfMessage( 'sofa-invalidschema' )->inContentLanguage()->text() );
 		}

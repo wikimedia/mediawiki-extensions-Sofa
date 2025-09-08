@@ -38,7 +38,7 @@ class SofaHooks {
 
 		try {
 			$schema = SofaSchema::normalizeSchema( $schema );
-		} catch ( InvalidSofaSchemaException $e ) {
+		} catch ( InvalidSofaSchemaException ) {
 			return '<strong class="error">' .
 				wfMessage( 'sofa-invalidschema' )->inContentLanguage()->text() .
 				'</strong>';
@@ -82,7 +82,7 @@ class SofaHooks {
 	public static function sofaGet( Parser $parser, $schema, ...$params ) {
 		try {
 			$schema = SofaSchema::normalizeSchema( $schema );
-		} catch ( InvalidSofaSchemaException $e ) {
+		} catch ( InvalidSofaSchemaException ) {
 			return '<strong class="error">' .
 				wfMessage( 'sofa-invalidschema' )->inContentLanguage()->text() .
 				'</strong>';

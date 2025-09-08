@@ -334,9 +334,8 @@ class SofaDB {
 		// This is hacky because the core backlinks abstraction doesn't work the way i want
 		// it to. In the long run, we may have to duplicate core's BacklinkUtils.
 
-		$dbr = MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
 		if ( $table === 'sofa_cache' ) {
-			$id = self::getIdsFromEncodedTitle( $title, $dbr );
+			$id = self::getIdsFromEncodedTitle( $title );
 			$conds = [
 				'page_id=sc_from',
 				'sc_map_id' => $id
@@ -349,10 +348,9 @@ class SofaDB {
 	 * Given a Title of the form Sofa:SchemaName get subquery to get schema id, and map_ids
 	 *
 	 * @param Title $title e.g. Sofa:Foo/1234
-	 * @param IDatabase $dbr
 	 * @return int Id
 	 */
-	private static function getIdsFromEncodedTitle( Title $title, IDatabase $dbr ) {
+	private static function getIdsFromEncodedTitle( Title $title ) {
 		if ( !$title->inNamespace( NS_SOFA ) ) {
 			throw new UnexpectedValueException( "Expected NS to be NS_SOFA" );
 		}
