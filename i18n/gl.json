@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"sofa-desc": "Unha extensión de informes para MediaWiki",
+	"sofa-noschemakey": "Cómpre especificar tanto <code>schema</code> como <code>key</code>.",
+	"sofa-invalidschema": "O nome do esquema non é válido.",
+	"sofa-invalidkey": "O nome da chave non é válido.",
+	"sofa-invalidvalue": "O valor empregado para valor non é válido.",
+	"right-sofa-edit": "Editar páxinas de esquema Sofa",
+	"action-sofa-edit": "editar páxinas de esquema Sofa"
+}
