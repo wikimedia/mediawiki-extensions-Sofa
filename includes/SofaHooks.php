@@ -2,6 +2,7 @@
 
 use MediaWiki\Revision\RenderedRevision;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
 
 class SofaHooks {
 	/**
