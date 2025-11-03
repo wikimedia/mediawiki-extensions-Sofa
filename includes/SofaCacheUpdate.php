@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\Title\Title;
+
 /**
  * Update the sofa_cache table (Cache information table).
  *

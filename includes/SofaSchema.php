@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\Title\Title;
 use Wikimedia\Rdbms\IDatabase;
 
 class SofaSchema {
