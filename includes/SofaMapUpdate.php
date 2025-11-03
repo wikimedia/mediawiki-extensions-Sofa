@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Title\Title;
+
 class SofaMapUpdate implements DeferrableUpdate {
 
 	/** @var array List of sofa maps to add */

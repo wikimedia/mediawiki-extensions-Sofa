@@ -2,6 +2,7 @@
 
 use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LibraryBase;
 use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LuaError;
+use MediaWiki\Title\Title;
 
 class SofaLuaLibrary extends LibraryBase {
 
