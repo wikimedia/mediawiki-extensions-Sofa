@@ -5,6 +5,10 @@
 		]
 	},
 	"sofa-desc": "MediaWiki的回报扩充套件",
+	"sofa-noschemakey": "必须指定 <code>schema</code>与<code>key</code>两者。",
+	"sofa-invalidschema": "架构名称无效",
+	"sofa-invalidkey": "Key名称无效",
+	"sofa-invalidvalue": "用于value的值无效。",
 	"right-sofa-edit": "编辑Sofa架构页面",
 	"action-sofa-edit": "编辑Sofa架构页面"
 }
