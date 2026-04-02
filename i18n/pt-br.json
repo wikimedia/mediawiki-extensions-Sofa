@@ -10,5 +10,7 @@
 	"sofa-noschemakey": "Ambos os <code>esquema</code> e o <code>chave</code> devem ser especificados",
 	"sofa-invalidschema": "Nome do esquema é inválido",
 	"sofa-invalidkey": "O nome da chave é inválido.",
-	"sofa-invalidvalue": "O valor usado para o valor é inválido."
+	"sofa-invalidvalue": "O valor usado para o valor é inválido.",
+	"right-sofa-edit": "Editar páginas de esquema Sofa",
+	"action-sofa-edit": "editar página de esquema Sofa"
 }
