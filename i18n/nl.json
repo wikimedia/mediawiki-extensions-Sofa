@@ -1,14 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"sofa-desc": "Een rapportage-uitbreiding voor MediaWiki",
 	"sofa-noschemakey": "Zowel het <code>schema</code> als de <code>key</code> moeten worden opgegeven.",
-	"sofa-invalidschema": "Schemanaam is ongeldig.",
-	"sofa-invalidkey": "De sleutelnaam is ongeldig.",
-	"sofa-invalidvalue": "De voor ‘value’ gebruikte waarde is ongeldig.",
+	"sofa-invalidschema": "Schemanaam is onjuist.",
+	"sofa-invalidkey": "De sleutelnaam is onjuist.",
+	"sofa-invalidvalue": "De voor ‘value’ gebruikte waarde is onjuist.",
 	"right-sofa-edit": "Pagina’s voor Sofa-schema’s bewerken",
 	"action-sofa-edit": "de pagina voor het Sofa-schema te bewerken"
 }
