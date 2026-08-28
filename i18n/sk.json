@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"sofa-desc": "Rozšírenie MediaWiky na tvorbu prehľadov",
+	"sofa-noschemakey": "Musia byť zadané aj <code>schema</code>, aj <code>key</code>.",
+	"sofa-invalidschema": "Názov schémy je neplatný.",
+	"sofa-invalidkey": "Názov kľúča je neplatný.",
+	"sofa-invalidvalue": "Použitá hodnota je neplatná.",
+	"right-sofa-edit": "Upravovať stránky schém Sofa",
+	"action-sofa-edit": "upravovať stránku schémy Sofa"
+}
