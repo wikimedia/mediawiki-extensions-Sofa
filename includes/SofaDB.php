@@ -191,13 +191,7 @@ class SofaDB {
 				'sofa_cache'
 			);
 		}
-		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
-			// MW 1.37+
-			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $jobs );
-		} else {
-			// @phan-suppress-next-line PhanUndeclaredStaticMethod
-			JobQueueGroup::singleton()->lazyPush( $jobs );
-		}
+		MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $jobs );
 	}
 
 	/**
